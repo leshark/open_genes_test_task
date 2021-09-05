@@ -1,0 +1,42 @@
+version: '3.1'
+services:
+  app-db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wh0_ca3es_ab0ut_3oot
+      MYSQL_DATABASE: test_db
+    ports:
+      - "3306:3306"
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+
+  web:
+    build: .
+    image: web
+    command: python src/__main__.py
+    ports:
+      - "8000:8000"
+    environment:
+      MYSQL_SERVER: app-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: wh0_ca3es_ab0ut_3oot
+      MYSQL_DB: test_db
+    volumes:
+      - ./migrations:/bio_stats_service/migrations
+    depends_on:
+      - app-db
+      - migration
+
+  migration:
+    image: web
+    environment:
+      MYSQL_SERVER: app-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: wh0_ca3es_ab0ut_3oot
+      MYSQL_DB: test_db
+    command: bash -c "sleep 15 && alembic upgrade head"
+    volumes:
+      - ./migrations:/bio_stats_service/migrations
+    depends_on:
+      - app-db

@@ -12,7 +12,7 @@ stats_router = APIRouter(prefix="/api/v1/stats", tags=["stats"])
 
 @stats_router.get(
     "/get_lifespan",
-    summary="Получить максимальные значения изменения продолжительности жизни для обоих видов",  # noqa E501
+    summary="Получить максимальные значения изменения продолжительности жизни для выбранного вида",  # noqa E501
     response_model=List[Experiment],
 )
 async def get_lifespan_view(creature_type: CreatureType, db: Session = Depends(get_db)):

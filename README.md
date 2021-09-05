@@ -52,9 +52,8 @@
 1. `docker-compose build`
 2. `docker-compose up -d`
 
-> При первом запуске необходимо подсоединиться к контейнеру `web` и инициализировать базу:
+> При первом запуске необходимо подсоединиться к контейнеру `web` и заполнить базу:
 ```
-alembic revision --autogenerate -m "create database"
-alembic upgrade head
 python fill_db.py
 ```
+сваггер доступен по: `http://127.0.0.1:8000/api/docs`
